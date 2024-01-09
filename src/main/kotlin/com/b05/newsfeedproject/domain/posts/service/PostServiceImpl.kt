@@ -9,13 +9,12 @@ import com.b05.newsfeedproject.domain.posts.model.toResponse
 import com.b05.newsfeedproject.domain.posts.repository.PostRepository
 import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
 class PostServiceImpl(
     private val postRepository: PostRepository
-) : PostService{
+) : PostService {
 
     @Transactional
     override fun createPost(request: CreatePostRequest): PostResponse {

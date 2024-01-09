@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter
 
 val current = LocalDateTime.now()
 val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+
 @Entity
 @Table(name = "posts")
 class Post(

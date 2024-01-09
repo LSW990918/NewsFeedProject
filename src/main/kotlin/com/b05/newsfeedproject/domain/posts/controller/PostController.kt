@@ -28,15 +28,15 @@ class PostController(
             .body(postService.createPost(createPostRequest))
     }
 
-    @GetMapping()
-    fun getPostList(): ResponseEntity<List<PostResponse>>  {
+    @GetMapping
+    fun getPostList(): ResponseEntity<List<PostResponse>> {
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(postService.getPostList())
     }
 
     @GetMapping("/{postId}")
-    fun getPost(@PathVariable postId: Int): ResponseEntity<PostResponse>  {
+    fun getPost(@PathVariable postId: Int): ResponseEntity<PostResponse> {
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(postService.getPost(postId))
@@ -46,14 +46,14 @@ class PostController(
     fun updatePost(
         @PathVariable postId: Int,
         @RequestBody updatePostRequest: UpdatePostRequest
-    ): ResponseEntity<PostResponse>  {
+    ): ResponseEntity<PostResponse> {
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(postService.updatePost(postId, updatePostRequest))
     }
 
     @DeleteMapping("/{postId}")
-    fun deletePost(@PathVariable postId: Int): ResponseEntity<Unit>  {
+    fun deletePost(@PathVariable postId: Int): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
             .body(postService.deletePost(postId))
