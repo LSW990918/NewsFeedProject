@@ -5,9 +5,8 @@ import com.b05.newsfeedproject.domain.comments.dto.CreateCommentRequest
 import com.b05.newsfeedproject.domain.comments.dto.UpdateCommentRequest
 
 interface CommentService {
-
-    fun createComment(commentRequest: CreateCommentRequest): CommentResponse
+    fun createComment(request: CreateCommentRequest): CommentResponse
     fun getCommentList(): List<CommentResponse>
-    fun updateComment(id: Int, commentRequest: UpdateCommentRequest): CommentResponse
-    fun deleteComment(id: Int)
+    fun updateComment(postId: Int, commentId: Int, request: UpdateCommentRequest): CommentResponse
+    fun deleteComment(postId: Int, commentId: Int)
 }
