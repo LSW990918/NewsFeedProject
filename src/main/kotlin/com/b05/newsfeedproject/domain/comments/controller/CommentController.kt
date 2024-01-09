@@ -3,6 +3,8 @@ package com.b05.newsfeedproject.domain.comments.controller
 import com.b05.newsfeedproject.domain.comments.dto.CommentResponse
 import com.b05.newsfeedproject.domain.comments.dto.CreateCommentRequest
 import com.b05.newsfeedproject.domain.comments.dto.UpdateCommentRequest
+import com.b05.newsfeedproject.domain.comments.service.CommentService
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -15,29 +17,46 @@ import org.springframework.web.bind.annotation.RestController
 
 @RequestMapping("/posts/{postId}/comments")
 @RestController
-class CommentController() {
+class CommentController(
+    private val commentService: CommentService
+) {
 
     @PostMapping()
-    fun createComment(@RequestBody commentRequest: CreateCommentRequest): ResponseEntity<CommentResponse> {
-        TODO()
+    fun createComment(
+        @PathVariable postId: Int,
+        @RequestBody commentRequest: CreateCommentRequest
+    ): ResponseEntity<CommentResponse> {
+        return ResponseEntity
+            .status(HttpStatus.CREATED)
+            .body(commentService.createComment(postId, commentRequest))
     }
 
     @GetMapping()
-    fun getCommentList(): ResponseEntity<List<CommentResponse>> {
-        TODO()
+    fun getCommentList(@PathVariable postId: Int): ResponseEntity<List<CommentResponse>> {
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(commentService.getCommentList(postId))
     }
 
     @PutMapping("/{commentId}")
     fun updateComment(
+        @PathVariable postId: Int,
         @PathVariable commentId: Int,
         @RequestBody commentRequest: UpdateCommentRequest
-    ): ResponseEntity<CommentResponse>{
-        TODO()
+    ): ResponseEntity<CommentResponse> {
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(commentService.updateComment(postId, commentId, commentRequest))
     }
 
     @DeleteMapping("/{commentId}")
-    fun deleteComment(@PathVariable commentId: Int): ResponseEntity<Unit>{
-        TODO()
+    fun deleteComment(
+        @PathVariable postId: Int,
+        @PathVariable commentId: Int
+    ): ResponseEntity<Unit> {
+        return ResponseEntity
+            .status(HttpStatus.NO_CONTENT)
+            .build()
     }
 
 }

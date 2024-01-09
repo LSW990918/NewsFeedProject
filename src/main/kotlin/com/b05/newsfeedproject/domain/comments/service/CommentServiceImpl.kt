@@ -9,7 +9,9 @@ import com.b05.newsfeedproject.domain.comments.repsitory.CommentRepository
 import com.b05.newsfeedproject.domain.exception.ModelNotFoundException
 import com.b05.newsfeedproject.domain.posts.repository.PostRepository
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.stereotype.Service
 
+@Service
 class CommentServiceImpl(
     private val commentRepository: CommentRepository,
     private val postRepository: PostRepository
@@ -27,7 +29,9 @@ class CommentServiceImpl(
         ).toResponse()
     }
 
-    override fun getCommentList(): List<CommentResponse> {
+    override fun getCommentList(postId: Int): List<CommentResponse> {
+        val post = postRepository.findByIdOrNull(postId)
+            ?: throw ModelNotFoundException("post", postId)
         return commentRepository.findAll().map { it.toResponse() }
     }
 

@@ -9,7 +9,7 @@ interface CommentService {
 
 
     fun createComment(postId: Int, request: CreateCommentRequest): CommentResponse
-    fun getCommentList(): List<CommentResponse>
+    fun getCommentList(postId: Int): List<CommentResponse>
     fun updateComment(postId: Int, commentId: Int, request: UpdateCommentRequest): CommentResponse
     fun deleteComment(postId: Int, commentId: Int)
 
