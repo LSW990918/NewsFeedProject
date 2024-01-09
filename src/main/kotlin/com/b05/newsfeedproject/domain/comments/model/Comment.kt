@@ -1,6 +1,7 @@
 package com.b05.newsfeedproject.domain.comments.model
 
 import com.b05.newsfeedproject.domain.comments.dto.CommentResponse
+import com.b05.newsfeedproject.domain.posts.model.Post
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
@@ -27,9 +28,9 @@ data class Comment(
     //@JoinColumn(name = "user_id")
     //var user: User,
 
-   // @ManyToOne(fetch = FetchType.LAZY)
-   // @JoinColumn(name = "post_id", nullable = false)
-   // var post: Post,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", nullable = false)
+    var post: Post,
 
 
     ) {
