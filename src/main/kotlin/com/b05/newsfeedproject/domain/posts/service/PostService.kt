@@ -3,7 +3,6 @@ package com.b05.newsfeedproject.domain.posts.service
 import com.b05.newsfeedproject.domain.posts.dto.CreatePostRequest
 import com.b05.newsfeedproject.domain.posts.dto.PostResponse
 import com.b05.newsfeedproject.domain.posts.dto.UpdatePostRequest
-import org.springframework.http.ResponseEntity
 
 interface PostService {
 
