@@ -1,15 +1,17 @@
 package com.b05.newsfeedproject.domain.posts.model
 
-import com.b05.newsfeedproject.domain.posts.dto.PostResponse
+import com.b05.newsfeedproject.domain.comments.model.Comment
 import jakarta.persistence.*
+import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
-val current = LocalDateTime.now()
-val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+//iso8601
 
 @Entity
 @Table(name = "posts")
+@EntityListeners(AuditingEntityListener::class)
 class Post(
 
     @Column(name = "title", nullable = false)
@@ -18,21 +20,22 @@ class Post(
     @Column(name = "content", nullable = false)
     var content: String,
 
-    @Column(name = "date", nullable = false)
-    var date: String = current.format(formatter),
+    @CreatedDate
+    @Column(name = "created_at")
+    var createdDate: LocalDateTime? = null,
 
-    //var comments: MutableList<Comment> = mutableListOf()
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    var updatedDate: LocalDateTime? = null,
+
+    @OneToMany(
+        mappedBy = "post",
+        fetch = FetchType.LAZY,
+    )
+    var comments: MutableList<Comment> = mutableListOf()
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Int? = null
 }
 
-fun Post.toResponse(): PostResponse {
-    return PostResponse(
-        id = id!!,
-        title = title,
-        content = content,
-        date = date
-    )
-}

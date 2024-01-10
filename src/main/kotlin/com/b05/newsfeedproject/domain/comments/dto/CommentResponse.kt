@@ -6,6 +6,6 @@ data class CommentResponse(
     val id: Int,
     val content: String,
     val date: String,
-    )
+)
 
 

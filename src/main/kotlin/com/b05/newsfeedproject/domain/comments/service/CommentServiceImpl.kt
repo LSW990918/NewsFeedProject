@@ -4,12 +4,12 @@ import com.b05.newsfeedproject.domain.comments.dto.CommentResponse
 import com.b05.newsfeedproject.domain.comments.dto.CreateCommentRequest
 import com.b05.newsfeedproject.domain.comments.dto.UpdateCommentRequest
 import com.b05.newsfeedproject.domain.comments.model.Comment
-import com.b05.newsfeedproject.domain.comments.model.toResponse
 import com.b05.newsfeedproject.domain.comments.repsitory.CommentRepository
 import com.b05.newsfeedproject.domain.exception.ModelNotFoundException
 import com.b05.newsfeedproject.domain.posts.repository.PostRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import java.time.format.DateTimeFormatter
 
 @Service
 class CommentServiceImpl(
@@ -32,7 +32,7 @@ class CommentServiceImpl(
     override fun getCommentList(postId: Int): List<CommentResponse> {
         val post = postRepository.findByIdOrNull(postId)
             ?: throw ModelNotFoundException("post", postId)
-        return commentRepository.findAll().map { it.toResponse() }
+        return post.comments.map { it.toResponse() }
     }
 
     override fun updateComment(postId: Int, commentId: Int, request: UpdateCommentRequest): CommentResponse {
@@ -58,4 +58,14 @@ class CommentServiceImpl(
         commentRepository.delete(comment)
     }
 
+}
+
+fun Comment.toResponse(): CommentResponse {
+    val date = updatedDate?.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+        ?: createdDate!!.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+    return CommentResponse(
+        id = id!!,
+        content = content,
+        date = date,
+    )
 }

@@ -6,7 +6,6 @@ import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
-
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -41,12 +40,3 @@ data class Comment(
     var id: Int? = null
 }
 
-fun Comment.toResponse(): CommentResponse {
-    val date = updatedDate?.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
-        ?: createdDate!!.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
-    return CommentResponse(
-        id = id!!,
-        content = content,
-        date = date,
-    )
-}

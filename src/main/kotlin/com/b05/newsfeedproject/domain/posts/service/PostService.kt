@@ -16,3 +16,4 @@ interface PostService {
 
     fun deletePost(postId: Int)
 }
+
