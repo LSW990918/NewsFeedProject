@@ -2,6 +2,7 @@ package com.b05.newsfeedproject.domain.postslike.service
 
 import com.b05.newsfeedproject.domain.exception.ModelNotFoundException
 import com.b05.newsfeedproject.domain.posts.repository.PostRepository
+import com.b05.newsfeedproject.domain.postslike.dto.PostLikeResponse
 import com.b05.newsfeedproject.domain.postslike.model.PostLike
 import com.b05.newsfeedproject.domain.postslike.repository.PostLikeRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -29,5 +30,9 @@ class PostLikeServiceImpl(
     override fun deletePostLike(userId: Int, postId: Int) {
         // postId와 userId로 postLike 삭제
         postLikeRepository.deleteByUserIdAndPostId(userId,postId)
+    }
+
+    override fun getPostLike(postId: Int): PostLikeResponse? {
+        return PostLikeResponse(postId,postLikeRepository.findByPostId(postId).size)
     }
 }

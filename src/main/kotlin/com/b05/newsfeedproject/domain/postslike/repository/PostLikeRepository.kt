@@ -7,6 +7,8 @@ interface PostLikeRepository : JpaRepository<PostLike, Int> {
 
     fun findByUserIdAndPostId(userId: Int, postId: Int): PostLike?
 
+    fun findByPostId(postId: Int): List<PostLike>
+
     fun deleteByUserIdAndPostId(userId: Int, postId: Int): PostLike?
 
 }
