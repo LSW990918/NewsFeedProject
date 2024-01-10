@@ -22,14 +22,14 @@ class PostLikeServiceImpl(
         return (postId != userId).let {
             if(it)
                 // 이미 좋아요가 안 눌렸다면
-                postLikeRepository.findByUserIdAndPostId(userId,postId) ?:
+//                postLikeRepository.findByUserIdAndPostId(userId,postId) ?:
                 postLikeRepository.save(PostLike(post))
         }
     }
 
     override fun deletePostLike(userId: Int, postId: Int) {
         // postId와 userId로 postLike 삭제
-        postLikeRepository.deleteByUserIdAndPostId(userId,postId)
+//        postLikeRepository.deleteByUserIdAndPostId(userId,postId)
     }
 
     override fun getPostLike(postId: Int): PostLikeResponse? {
