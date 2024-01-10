@@ -45,27 +45,7 @@ class JwtTokenProvider(
             .parseClaimsJws(token)
             .body
             .subject
-//
-//
-//    fun getAuthentication(token: String):Authentication{
-//
-//    }
 
-    fun validateToken(token: String?): Boolean {
-        try {
-            val claims: Jws<Claims> = Jwts.parserBuilder().setSigningKey(secretKey.toByteArray())
-                    .build()
-                    .parseClaimsJws(token)
-            return !claims.body.expiration.before(java.util.Date())
-        } catch (e: Exception) {
-
-            return false
-        }
-    }
-
-    fun resolveToken(request:HttpServletRequest):String {
-        return request.getHeader("Authorization")
-    }
 
 
     fun getExpiration() = expirationHours

@@ -27,17 +27,6 @@ class JwtAuthenticationFilter(
         val token = parseBearerToken(request)
         val user = parseUserSpecification(token)
 
-//        if (token != null && jwtTokenProvider.validateToken(token)) {
-//            val key = "JWT_TOKEN:${jwtTokenProvider.validateTokenAndGetSubject(token)}"
-//            val storedToken = redisTemplate.opsForValue().get(key)
-//
-//            if (redisTemplate.hasKey(key) && storedToken != null)
-//                SecurityContextHolder.getContext().authentication =
-//                        UsernamePasswordAuthenticationToken.authenticated(user, token, user.authorities)
-//
-//        }
-////
-
 
         UsernamePasswordAuthenticationToken.authenticated(user, token, user.authorities)
                 .apply {
