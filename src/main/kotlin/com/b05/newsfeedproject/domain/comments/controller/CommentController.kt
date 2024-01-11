@@ -36,23 +36,25 @@ class CommentController(
 
     @PutMapping("/{commentId}")
     fun updateComment(
+        @AuthenticationPrincipal user: User,
         @PathVariable postId: Int,
         @PathVariable commentId: Int,
         @RequestBody commentRequest: UpdateCommentRequest
     ): ResponseEntity<CommentResponse> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(commentService.updateComment(postId, commentId, commentRequest))
+            .body(commentService.updateComment(user.password.toInt(),postId, commentId, commentRequest))
     }
 
     @DeleteMapping("/{commentId}")
     fun deleteComment(
+        @AuthenticationPrincipal user: User,
         @PathVariable postId: Int,
         @PathVariable commentId: Int
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
-            .body(commentService.deleteComment(postId, commentId))
+            .body(commentService.deleteComment(user.password.toInt(),postId, commentId))
     }
 
 }

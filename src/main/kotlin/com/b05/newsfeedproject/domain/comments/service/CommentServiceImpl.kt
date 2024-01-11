@@ -18,9 +18,9 @@ class CommentServiceImpl(
     private val postRepository: PostRepository,
     private val userRepository: UserRepository,
 
-) : CommentService {
+    ) : CommentService {
 
-    override fun createComment(postId: Int, userId: Int, request: CreateCommentRequest): CommentResponse {
+    override fun createComment(userId: Int, postId: Int, request: CreateCommentRequest): CommentResponse {
         val post = postRepository.findByIdOrNull(postId)
             ?: throw ModelNotFoundException("post", postId)
         val user = userRepository.findByIdOrNull(userId)
@@ -31,7 +31,7 @@ class CommentServiceImpl(
                 post = post,
                 user = user,
 
-            )
+                )
         ).toResponse()
     }
 
@@ -41,7 +41,12 @@ class CommentServiceImpl(
         return post.comments.map { it.toResponse() }
     }
 
-    override fun updateComment(postId: Int, commentId: Int, request: UpdateCommentRequest): CommentResponse {
+    override fun updateComment(
+        userId: Int,
+        postId: Int,
+        commentId: Int,
+        request: UpdateCommentRequest
+    ): CommentResponse {
         val post = postRepository.findByIdOrNull(postId)
             ?: throw ModelNotFoundException("post", postId)
         val comment = commentRepository.findByIdOrNull(commentId)
@@ -53,7 +58,7 @@ class CommentServiceImpl(
         return commentRepository.save(comment).toResponse()
     }
 
-    override fun deleteComment(postId: Int, commentId: Int) {
+    override fun deleteComment(userId: Int, postId: Int, commentId: Int) {
         val post = postRepository.findByIdOrNull(postId)
             ?: throw ModelNotFoundException("post", postId)
         val comment = commentRepository.findByIdOrNull(commentId)
@@ -73,5 +78,6 @@ fun Comment.toResponse(): CommentResponse {
         id = id!!,
         content = content,
         date = date,
+        user = user
     )
 }
