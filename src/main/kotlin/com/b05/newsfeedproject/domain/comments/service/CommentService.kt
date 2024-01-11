@@ -3,7 +3,6 @@ package com.b05.newsfeedproject.domain.comments.service
 import com.b05.newsfeedproject.domain.comments.dto.CommentResponse
 import com.b05.newsfeedproject.domain.comments.dto.CreateCommentRequest
 import com.b05.newsfeedproject.domain.comments.dto.UpdateCommentRequest
-import com.b05.newsfeedproject.domain.posts.model.Post
 
 interface CommentService {
 

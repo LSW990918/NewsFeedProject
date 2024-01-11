@@ -8,14 +8,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.core.userdetails.User
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RequestMapping("/posts")
 @RestController
@@ -26,10 +19,11 @@ class PostController(
     @PostMapping
     fun createPost(
         @AuthenticationPrincipal user: User,
-        @RequestBody createPostRequest: CreatePostRequest): ResponseEntity<PostResponse> {
+        @RequestBody createPostRequest: CreatePostRequest
+    ): ResponseEntity<PostResponse> {
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(postService.createPost(user.password.toInt(),createPostRequest))
+            .body(postService.createPost(user.password.toInt(), createPostRequest))
     }
 
     @GetMapping
@@ -54,15 +48,16 @@ class PostController(
     ): ResponseEntity<PostResponse> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(postService.updatePost(user.password.toInt(),postId, updatePostRequest))
+            .body(postService.updatePost(user.password.toInt(), postId, updatePostRequest))
     }
 
     @DeleteMapping("/{postId}")
     fun deletePost(
         @AuthenticationPrincipal user: User,
-        @PathVariable postId: Int): ResponseEntity<Unit> {
+        @PathVariable postId: Int
+    ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
-            .body(postService.deletePost(user.password.toInt(),postId))
+            .body(postService.deletePost(user.password.toInt(), postId))
     }
 }
