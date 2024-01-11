@@ -7,6 +7,7 @@ import com.b05.newsfeedproject.domain.comments.model.Comment
 import com.b05.newsfeedproject.domain.comments.repsitory.CommentRepository
 import com.b05.newsfeedproject.domain.exception.ModelNotFoundException
 import com.b05.newsfeedproject.domain.posts.repository.PostRepository
+import com.b05.newsfeedproject.domain.user.repository.UserRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.format.DateTimeFormatter
@@ -14,17 +15,22 @@ import java.time.format.DateTimeFormatter
 @Service
 class CommentServiceImpl(
     private val commentRepository: CommentRepository,
-    private val postRepository: PostRepository
+    private val postRepository: PostRepository,
+    private val userRepository: UserRepository,
 
 ) : CommentService {
 
-    override fun createComment(postId: Int, request: CreateCommentRequest): CommentResponse {
+    override fun createComment(postId: Int, userId: Int, request: CreateCommentRequest): CommentResponse {
         val post = postRepository.findByIdOrNull(postId)
             ?: throw ModelNotFoundException("post", postId)
+        val user = userRepository.findByIdOrNull(userId)
+            ?: throw ModelNotFoundException("user", userId)
         return commentRepository.save(
             Comment(
                 content = request.content,
                 post = post,
+                user = user,
+
             )
         ).toResponse()
     }

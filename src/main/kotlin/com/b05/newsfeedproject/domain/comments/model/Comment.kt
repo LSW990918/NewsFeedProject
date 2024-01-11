@@ -1,13 +1,12 @@
 package com.b05.newsfeedproject.domain.comments.model
 
-import com.b05.newsfeedproject.domain.comments.dto.CommentResponse
 import com.b05.newsfeedproject.domain.posts.model.Post
+import com.b05.newsfeedproject.domain.user.model.User
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 
 @Entity
@@ -25,9 +24,9 @@ data class Comment(
     @Column(name = "updated_at")
     var updatedDate: LocalDateTime? = null,
 
-    //@ManyToOne
-    //@JoinColumn(name = "user_id")
-    //var user: User,
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    var user: User,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
