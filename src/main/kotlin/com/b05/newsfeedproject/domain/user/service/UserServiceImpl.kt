@@ -67,7 +67,7 @@ class UserServiceImpl(
         } ?: throw UserNotFoundException()
 
 
-        val token = tokenProvider.createToken("${user.nickName}:${user.email}")
+        val token = tokenProvider.createToken("${user.nickName}:${user.email}:${user.id}")
 
 
         redisTemplate.opsForValue().set("JWT_TOKEN:${user.nickName}", token, tokenProvider.getExpiration())
@@ -81,6 +81,7 @@ class UserServiceImpl(
 
         val user =
             SecurityContextHolder.getContext().authentication.principal as org.springframework.security.core.userdetails.User
+
 
         if (redisTemplate.opsForValue().get("JWT_TOKEN:${user.username}") != null)
             redisTemplate.delete("JWT_TOKEN:${user.username}")

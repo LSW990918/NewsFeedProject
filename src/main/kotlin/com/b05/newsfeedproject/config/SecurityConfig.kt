@@ -34,8 +34,10 @@ class SecurityConfig(private val jwtAuthenticationFilter: JwtAuthenticationFilte
         }.authorizeHttpRequests {
             //requestMatchers("/signup", "/signin", "/logout").permitAll()
 
-            it.requestMatchers("/users/**").authenticated()
-                .anyRequest().permitAll()
+            it.requestMatchers("/posts","/posts/**","/posts/{postId}/comments").permitAll()
+                    .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**","/signup","/signout","/signin",).permitAll()
+                    .anyRequest().authenticated()
+
 
         }.sessionManagement {
             it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
