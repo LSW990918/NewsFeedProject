@@ -26,7 +26,7 @@ class UserServiceImpl(
         private val encoder: PasswordEncoder,
         private val redisTemplate: RedisTemplate<String, Any>
 ) : UserService {
-    override fun getUserById(userId: Long): UserResponse {
+    override fun getUserById(userId: Int): UserResponse {
         val user = userRepository.findByIdOrNull(userId) ?: throw ModelNotFoundException("User", userId)
 
         return user.toResponse()
@@ -48,7 +48,7 @@ class UserServiceImpl(
 
 
     @Transactional
-    override fun updateUser(userId: Long, request: UpdateUserRequest): UserResponse {
+    override fun updateUser(userId: Int, request: UpdateUserRequest): UserResponse {
         val user = userRepository.findByIdOrNull(userId) ?: throw ModelNotFoundException("User", userId)
         user.update(request, encoder)
         return userRepository.save(user).toResponse()

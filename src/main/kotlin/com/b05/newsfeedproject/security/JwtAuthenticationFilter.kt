@@ -28,13 +28,18 @@ class JwtAuthenticationFilter(
         val user = parseUserSpecification(token)
 
 
-        UsernamePasswordAuthenticationToken.authenticated(user, token, user.authorities)
-                .apply {
-                    details = WebAuthenticationDetails(request)
-                }.also {
+        if (token != null && jwtTokenProvider.validateToken(token)) {
+            val isLogout = redisTemplate.opsForValue().get("JWT_TOKEN:${user.username}")
 
-                    SecurityContextHolder.getContext().authentication = it
-                }
+            if (isLogout != null)
+                UsernamePasswordAuthenticationToken.authenticated(user, token, user.authorities)
+                        .apply {
+                            details = WebAuthenticationDetails(request)
+                        }.also {
+
+                            SecurityContextHolder.getContext().authentication = it
+                        }
+        }
 
         filterChain.doFilter(request, response)
 
@@ -43,7 +48,6 @@ class JwtAuthenticationFilter(
 
     private fun parseBearerToken(request: HttpServletRequest): String? = request.getHeader(HttpHeaders.AUTHORIZATION)
             ?.takeIf { it.startsWith("Bearer ", true) }?.substring(7)
-
 
 
     private fun parseUserSpecification(token: String?) = (

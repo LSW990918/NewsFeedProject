@@ -47,6 +47,22 @@ class JwtTokenProvider(
             .subject
 
 
+    fun validateToken(token: String):Boolean {
+
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(secretKey.toByteArray())
+                    .build()
+                    .parseClaimsJws(token)
+            return true
+        }catch (e:Exception){
+
+            return false
+        }
+
+
+
+    }
 
     fun getExpiration() = expirationHours
 }

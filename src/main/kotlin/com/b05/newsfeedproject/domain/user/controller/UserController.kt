@@ -20,7 +20,7 @@ class UserController(
 
     //프로필 조회
     @GetMapping("/users/{userId}/profile")
-    fun getUserById(@PathVariable userId: Long): ResponseEntity<UserResponse> {
+    fun getUserById(@PathVariable userId: Int): ResponseEntity<UserResponse> {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserById(userId))
     }
 
@@ -32,7 +32,7 @@ class UserController(
 
     //프로필 수정
     @PutMapping("/users/{userId}/profile")
-    fun updateUser(@PathVariable userId: Long, @RequestBody updateUserRequest: UpdateUserRequest): ResponseEntity<UserResponse> {
+    fun updateUser(@PathVariable userId: Int, @RequestBody updateUserRequest: UpdateUserRequest): ResponseEntity<UserResponse> {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(userId, updateUserRequest))
     }
 

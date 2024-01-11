@@ -7,8 +7,10 @@ import io.swagger.v3.oas.models.security.SecurityRequirement
 import io.swagger.v3.oas.models.security.SecurityScheme
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.core.context.SecurityContext
+import java.util.*
 
-private const val SECURITY_SCHEME_NAME = "authorization"
+private const val SECURITY_SCHEME_NAME = "Authorization"
 @Configuration
 class SwaggerConfig {
 
@@ -27,5 +29,6 @@ class SwaggerConfig {
                             .description("뉴스피드 API schema")
                             .version("1.0.0")
             )
+
 
 }

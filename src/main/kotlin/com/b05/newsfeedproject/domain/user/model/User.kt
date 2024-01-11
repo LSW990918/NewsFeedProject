@@ -50,7 +50,7 @@ class User(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id:Long? = null
+    var id:Int? = null
 
 
 
