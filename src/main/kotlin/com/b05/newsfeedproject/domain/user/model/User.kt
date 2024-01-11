@@ -1,6 +1,5 @@
 package com.b05.newsfeedproject.domain.user.model
 
-import com.b05.newsfeedproject.domain.user.dto.SignInUserRequest
 import com.b05.newsfeedproject.domain.user.dto.SignupUserRequest
 import com.b05.newsfeedproject.domain.user.dto.UpdateUserRequest
 import com.b05.newsfeedproject.domain.user.dto.UserResponse
@@ -8,44 +7,42 @@ import com.fasterxml.jackson.annotation.JsonFormat
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
 import java.time.LocalDateTime
-import java.util.Date
 
 
 @Entity
 @Table(name = "app_user")
 class User(
-        @Column(name = "email", nullable = false)
-        var email:String,
-        @Column(name = "password", nullable = false)
-        var password:String,
-        @Column(name = "nickname", nullable = false)
-        var nickName:String,
+    @Column(name = "email", nullable = false)
+    var email: String,
+    @Column(name = "password", nullable = false)
+    var password: String,
+    @Column(name = "nickname", nullable = false)
+    var nickName: String,
 
-        @Enumerated(EnumType.STRING)
-        @Column(name = "type", nullable = false)
-        var type:UserType = UserType.USER,
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    var type: UserType = UserType.USER,
 
-        @CreationTimestamp
-        @Column(name = "create_at", nullable = true,updatable = false)
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-        var create_at:LocalDateTime? = null,
-        @UpdateTimestamp
-        @Column(name = "update_at", nullable = true)
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-        var update_at:LocalDateTime? = null
-){
+    @CreationTimestamp
+    @Column(name = "create_at", nullable = true, updatable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    var create_at: LocalDateTime? = null,
+    @UpdateTimestamp
+    @Column(name = "update_at", nullable = true)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    var update_at: LocalDateTime? = null
+) {
 
 
     companion object {
-        fun from(request:SignupUserRequest,encoder:PasswordEncoder) = User(
-                email = request.email,
-                password = encoder.encode(request.password),
-                nickName = request.nickName,
-                create_at = LocalDateTime.now(),
-                update_at = null
+        fun from(request: SignupUserRequest, encoder: PasswordEncoder) = User(
+            email = request.email,
+            password = encoder.encode(request.password),
+            nickName = request.nickName,
+            create_at = LocalDateTime.now(),
+            update_at = null
         )
 
     }
@@ -53,13 +50,11 @@ class User(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id:Int? = null
-
-
+    var id: Int? = null
 
 
     //프로필 수정 시 패스워드 암호화
-    fun update(request:UpdateUserRequest,encoder: PasswordEncoder) {
+    fun update(request: UpdateUserRequest, encoder: PasswordEncoder) {
         email = request.email
         password = encoder.encode(request.password)
         nickName = request.nickName
@@ -67,12 +62,12 @@ class User(
 }
 
 fun User.toResponse() = UserResponse(
-        id,
-        email,
-        nickName,
-        password,
-        type.toString(),
-        create_at.toString(),
-        update_at.toString()
+    id,
+    email,
+    nickName,
+    password,
+    type.toString(),
+    create_at.toString(),
+    update_at.toString()
 )
 
