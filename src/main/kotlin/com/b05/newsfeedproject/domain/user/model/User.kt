@@ -4,6 +4,7 @@ import com.b05.newsfeedproject.domain.user.dto.SignInUserRequest
 import com.b05.newsfeedproject.domain.user.dto.SignupUserRequest
 import com.b05.newsfeedproject.domain.user.dto.UpdateUserRequest
 import com.b05.newsfeedproject.domain.user.dto.UserResponse
+import com.fasterxml.jackson.annotation.JsonFormat
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
@@ -28,10 +29,12 @@ class User(
         var type:UserType = UserType.USER,
 
         @CreationTimestamp
-        @Column(name = "create_at", nullable = true)
+        @Column(name = "create_at", nullable = true,updatable = false)
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         var create_at:LocalDateTime? = null,
         @UpdateTimestamp
         @Column(name = "update_at", nullable = true)
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         var update_at:LocalDateTime? = null
 ){
 
@@ -72,3 +75,4 @@ fun User.toResponse() = UserResponse(
         create_at.toString(),
         update_at.toString()
 )
+

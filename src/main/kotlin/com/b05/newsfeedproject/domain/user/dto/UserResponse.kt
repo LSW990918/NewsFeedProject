@@ -1,7 +1,5 @@
 package com.b05.newsfeedproject.domain.user.dto
 
-import java.util.*
-
 data class UserResponse(
         var id: Int?,
         var email: String,

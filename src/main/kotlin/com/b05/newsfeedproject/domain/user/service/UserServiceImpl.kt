@@ -21,10 +21,10 @@ import java.time.LocalDateTime
 
 @Service
 class UserServiceImpl(
-        private val userRepository: UserRepository,
-        private val tokenProvider: JwtTokenProvider,
-        private val encoder: PasswordEncoder,
-        private val redisTemplate: RedisTemplate<String, Any>
+    private val userRepository: UserRepository,
+    private val tokenProvider: JwtTokenProvider,
+    private val encoder: PasswordEncoder,
+    private val redisTemplate: RedisTemplate<String, Any>
 ) : UserService {
     override fun getUserById(userId: Int): UserResponse {
         val user = userRepository.findByIdOrNull(userId) ?: throw ModelNotFoundException("User", userId)
@@ -41,9 +41,11 @@ class UserServiceImpl(
         }
 
 
-        return userRepository.save(User.from(
+        return userRepository.save(
+            User.from(
                 request, encoder
-        )).toResponse()
+            )
+        ).toResponse()
     }
 
 
@@ -65,7 +67,7 @@ class UserServiceImpl(
         } ?: throw UserNotFoundException()
 
 
-        val token = tokenProvider.createToken("${user.nickName}:${user.email}")
+        val token = tokenProvider.createToken("${user.nickName}:${user.email}:${user.id}")
 
 
         redisTemplate.opsForValue().set("JWT_TOKEN:${user.nickName}", token, tokenProvider.getExpiration())
@@ -77,7 +79,9 @@ class UserServiceImpl(
     override fun signout() {
 
 
-        val user = SecurityContextHolder.getContext().authentication.principal as org.springframework.security.core.userdetails.User
+        val user =
+            SecurityContextHolder.getContext().authentication.principal as org.springframework.security.core.userdetails.User
+
 
         if (redisTemplate.opsForValue().get("JWT_TOKEN:${user.username}") != null)
             redisTemplate.delete("JWT_TOKEN:${user.username}")

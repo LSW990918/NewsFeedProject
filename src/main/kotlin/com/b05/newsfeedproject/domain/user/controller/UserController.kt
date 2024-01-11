@@ -3,15 +3,9 @@ package com.b05.newsfeedproject.domain.user.controller
 import com.b05.newsfeedproject.domain.user.dto.*
 import com.b05.newsfeedproject.domain.user.service.UserService
 import com.b05.newsfeedproject.security.JwtTokenProvider
-import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class UserController(
@@ -41,8 +35,6 @@ class UserController(
     fun signIn(@RequestBody signInUserRequest: SignInUserRequest): ResponseEntity<SignInResponse> {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.signIn(signInUserRequest))
     }
-
-
 
 
     @PostMapping("/signout")

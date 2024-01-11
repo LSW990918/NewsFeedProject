@@ -24,11 +24,12 @@ class CommentController(
     @PostMapping()
     fun createComment(
         @PathVariable postId: Int,
+        @PathVariable userId: Int,
         @RequestBody commentRequest: CreateCommentRequest
     ): ResponseEntity<CommentResponse> {
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(commentService.createComment(postId, commentRequest))
+            .body(commentService.createComment(postId, userId, commentRequest))
     }
 
     @GetMapping()
