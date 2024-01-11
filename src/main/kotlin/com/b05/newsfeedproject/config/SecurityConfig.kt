@@ -35,12 +35,12 @@ class SecurityConfig(private val jwtAuthenticationFilter: JwtAuthenticationFilte
             //requestMatchers("/signup", "/signin", "/logout").permitAll()
 
             it.requestMatchers("/users/**").authenticated()
-                    .anyRequest().permitAll()
+                .anyRequest().permitAll()
 
         }.sessionManagement {
             it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         }.addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter::class.java)
-                .build()
+            .build()
 
     }
 

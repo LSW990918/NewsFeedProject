@@ -10,20 +10,21 @@ import org.springframework.stereotype.Component
 import java.time.LocalDateTime
 
 
-
 @Component
 class AdminInitializer(
-        private val userRepository: UserRepository,
-        private val encoder: PasswordEncoder
+    private val userRepository: UserRepository,
+    private val encoder: PasswordEncoder
 ) : ApplicationRunner {
     override fun run(args: ApplicationArguments?) {
-        userRepository.save(User(
+        userRepository.save(
+            User(
                 "admin",
                 "관리자",
                 encoder.encode("admin"),
                 UserType.ADMIN,
                 LocalDateTime.now(),
                 null
-        ))
+            )
+        )
     }
 }

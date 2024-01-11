@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing
 class NewsFeedProjectApplication
 
 fun main(args: Array<String>) {
-	runApplication<NewsFeedProjectApplication>(*args)
+    runApplication<NewsFeedProjectApplication>(*args)
 }

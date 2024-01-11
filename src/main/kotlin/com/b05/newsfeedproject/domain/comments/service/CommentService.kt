@@ -7,7 +7,6 @@ import com.b05.newsfeedproject.domain.posts.model.Post
 
 interface CommentService {
 
-
     fun createComment(postId: Int, request: CreateCommentRequest): CommentResponse
     fun getCommentList(postId: Int): List<CommentResponse>
     fun updateComment(postId: Int, commentId: Int, request: UpdateCommentRequest): CommentResponse

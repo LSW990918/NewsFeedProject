@@ -22,30 +22,29 @@ import javax.crypto.spec.SecretKeySpec
 @Slf4j
 @Service
 class JwtTokenProvider(
-        @Value("\${secret-key}")
-        private val secretKey: String,
-        @Value("\${expiration-hours}")
-        private val expirationHours:Long,
-        @Value("\${issuer}")
-        private val issuer:String
-){
+    @Value("\${secret-key}")
+    private val secretKey: String,
+    @Value("\${expiration-hours}")
+    private val expirationHours: Long,
+    @Value("\${issuer}")
+    private val issuer: String
+) {
 
-    fun createToken(userInfo:String) = Jwts.builder()
-            .signWith(SecretKeySpec(secretKey.toByteArray(),SignatureAlgorithm.HS512.jcaName))
-            .setSubject(userInfo)
-            .setIssuer(issuer)
-            .setIssuedAt(Timestamp.valueOf(LocalDateTime.now()))
-            .setExpiration(Date.from(Instant.now().plus(expirationHours,ChronoUnit.HOURS)))
-            .compact()
+    fun createToken(userInfo: String) = Jwts.builder()
+        .signWith(SecretKeySpec(secretKey.toByteArray(), SignatureAlgorithm.HS512.jcaName))
+        .setSubject(userInfo)
+        .setIssuer(issuer)
+        .setIssuedAt(Timestamp.valueOf(LocalDateTime.now()))
+        .setExpiration(Date.from(Instant.now().plus(expirationHours, ChronoUnit.HOURS)))
+        .compact()
 
 
-    fun validateTokenAndGetSubject(token:String) = Jwts.parserBuilder()
-            .setSigningKey(secretKey.toByteArray())
-            .build()
-            .parseClaimsJws(token)
-            .body
-            .subject
-
+    fun validateTokenAndGetSubject(token: String) = Jwts.parserBuilder()
+        .setSigningKey(secretKey.toByteArray())
+        .build()
+        .parseClaimsJws(token)
+        .body
+        .subject
 
 
     fun getExpiration() = expirationHours
