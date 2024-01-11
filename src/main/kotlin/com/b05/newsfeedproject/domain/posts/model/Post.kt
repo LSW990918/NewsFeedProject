@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 //iso8601
 
 @Entity
-@Table(name = "posts")
+@Table(name = "post")
 @EntityListeners(AuditingEntityListener::class)
 class Post(
 

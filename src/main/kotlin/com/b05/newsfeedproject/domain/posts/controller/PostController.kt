@@ -6,6 +6,8 @@ import com.b05.newsfeedproject.domain.posts.dto.UpdatePostRequest
 import com.b05.newsfeedproject.domain.posts.service.PostService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.security.core.userdetails.User
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -22,10 +24,12 @@ class PostController(
 ) {
 
     @PostMapping
-    fun createPost(@RequestBody createPostRequest: CreatePostRequest): ResponseEntity<PostResponse> {
+    fun createPost(
+        @AuthenticationPrincipal user: User,
+        @RequestBody createPostRequest: CreatePostRequest): ResponseEntity<PostResponse> {
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(postService.createPost(createPostRequest))
+            .body(postService.createPost(user.password.toInt(),createPostRequest))
     }
 
     @GetMapping
@@ -44,18 +48,21 @@ class PostController(
 
     @PutMapping("/{postId}")
     fun updatePost(
+        @AuthenticationPrincipal user: User,
         @PathVariable postId: Int,
         @RequestBody updatePostRequest: UpdatePostRequest
     ): ResponseEntity<PostResponse> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(postService.updatePost(postId, updatePostRequest))
+            .body(postService.updatePost(user.password.toInt(),postId, updatePostRequest))
     }
 
     @DeleteMapping("/{postId}")
-    fun deletePost(@PathVariable postId: Int): ResponseEntity<Unit> {
+    fun deletePost(
+        @AuthenticationPrincipal user: User,
+        @PathVariable postId: Int): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
-            .body(postService.deletePost(postId))
+            .body(postService.deletePost(user.password.toInt(),postId))
     }
 }

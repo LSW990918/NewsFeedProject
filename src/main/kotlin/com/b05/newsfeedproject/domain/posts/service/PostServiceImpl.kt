@@ -6,6 +6,7 @@ import com.b05.newsfeedproject.domain.posts.dto.PostResponse
 import com.b05.newsfeedproject.domain.posts.dto.UpdatePostRequest
 import com.b05.newsfeedproject.domain.posts.model.Post
 import com.b05.newsfeedproject.domain.posts.repository.PostRepository
+import com.b05.newsfeedproject.domain.user.repository.UserRepository
 import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -13,15 +14,19 @@ import java.time.format.DateTimeFormatter
 
 @Service
 class PostServiceImpl(
-    private val postRepository: PostRepository
+    private val postRepository: PostRepository,
+    private val userRepository: UserRepository
 ) : PostService {
 
     @Transactional
-    override fun createPost(request: CreatePostRequest): PostResponse {
+    override fun createPost(userId: Int, request: CreatePostRequest): PostResponse {
+        val user = userRepository.findByIdOrNull(userId)
+            ?: throw ModelNotFoundException("user", userId)
         return postRepository.save(
             Post(
                 title = request.title,
-                content = request.content
+                content = request.content,
+                user = user
             )
         ).toResponse()
     }
@@ -38,7 +43,10 @@ class PostServiceImpl(
     }
 
     @Transactional
-    override fun updatePost(postId: Int, request: UpdatePostRequest): PostResponse {
+    override fun updatePost(userId: Int, postId: Int, request: UpdatePostRequest): PostResponse {
+        val user = userRepository.findByIdOrNull(userId)
+            ?: throw ModelNotFoundException("user", userId)
+        //userId와 post.user 일치하는지 확인
         val post = postRepository.findByIdOrNull(postId)
             ?: throw ModelNotFoundException("post", postId)
         post.title = request.title
@@ -48,7 +56,10 @@ class PostServiceImpl(
     }
 
     @Transactional
-    override fun deletePost(postId: Int) {
+    override fun deletePost(userId: Int, postId: Int) {
+        val user = userRepository.findByIdOrNull(userId)
+            ?: throw ModelNotFoundException("user", userId)
+        //userId와 post.user 일치하는지 확인
         val post = postRepository.findByIdOrNull(postId)
             ?: throw ModelNotFoundException("post", postId)
         postRepository.delete(post)
@@ -62,7 +73,8 @@ fun Post.toResponse(): PostResponse {
         id = id!!,
         title = title,
         content = content,
-        date = date
+        date = date,
+        user = user
     )
 }
 
