@@ -38,10 +38,11 @@ class SecurityConfig(private val jwtAuthenticationFilter: JwtAuthenticationFilte
                     .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**","/signup","/signout","/signin",).permitAll()
                     .anyRequest().authenticated()
 
+
         }.sessionManagement {
             it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         }.addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter::class.java)
-                .build()
+            .build()
 
     }
 
