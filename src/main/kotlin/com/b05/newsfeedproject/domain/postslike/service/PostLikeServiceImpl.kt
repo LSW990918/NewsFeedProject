@@ -5,6 +5,7 @@ import com.b05.newsfeedproject.domain.posts.repository.PostRepository
 import com.b05.newsfeedproject.domain.postslike.dto.PostLikeResponse
 import com.b05.newsfeedproject.domain.postslike.model.PostLike
 import com.b05.newsfeedproject.domain.postslike.repository.PostLikeRepository
+import com.b05.newsfeedproject.domain.user.repository.UserRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -12,27 +13,24 @@ import org.springframework.stereotype.Service
 class PostLikeServiceImpl(
     private val postRepository: PostRepository,
     private val postLikeRepository: PostLikeRepository,
-//    private val userRepository: UserRepository,
+    private val userRepository: UserRepository,
 ) : PostLikeService {
     override fun createPostLike(userId: Int, postId: Int) {
-//        postId와  userId가 있고,
         val post = postRepository.findByIdOrNull(postId) ?: throw ModelNotFoundException("post", postId)
-//        val user = userRepository.findByIdOrNull(userId) ?: throw ModelNotFoundException("user", userId)
-//        post의 게시자가 user가 아니며
-        return (postId != userId).let {
-            if(it)
-                // 이미 좋아요가 안 눌렸다면
-//                postLikeRepository.findByUserIdAndPostId(userId,postId) ?:
-                postLikeRepository.save(PostLike(post))
+        val user = userRepository.findByIdOrNull(userId) ?: throw ModelNotFoundException("user", userId)
+        // post.userId 추가
+        return (0 != userId).let {
+            if (it)
+                postLikeRepository.findByUserIdAndPostId(userId,postId) ?:
+                postLikeRepository.save(PostLike(post,user))
         }
     }
 
     override fun deletePostLike(userId: Int, postId: Int) {
-        // postId와 userId로 postLike 삭제
-//        postLikeRepository.deleteByUserIdAndPostId(userId,postId)
+        postLikeRepository.deleteByUserIdAndPostId(userId,postId)
     }
 
     override fun getPostLike(postId: Int): PostLikeResponse? {
-        return PostLikeResponse(postId,postLikeRepository.findByPostId(postId).size)
+        return PostLikeResponse(postId, postLikeRepository.findByPostId(postId).size)
     }
 }

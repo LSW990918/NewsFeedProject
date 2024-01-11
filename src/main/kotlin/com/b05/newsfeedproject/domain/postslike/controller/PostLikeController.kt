@@ -14,23 +14,23 @@ class PostLikeController(
     @GetMapping("/{postId}/like")
     fun getPostLike(@PathVariable postId: Int): ResponseEntity<PostLikeResponse> {
         return ResponseEntity
-            .status(HttpStatus.NO_CONTENT)
+            .status(HttpStatus.OK)
             .body(postLikeService.getPostLike(postId))
     }
 
     @PostMapping("/{postId}/like")
     fun createPostLike(@PathVariable postId: Int): ResponseEntity<Unit> {
-        //        var userId = JWTHelper.~~
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
-            .body(postLikeService.createPostLike(0, postId))
+            // userId JWT에서 꺼내기
+            .body(postLikeService.createPostLike(44, postId))
     }
 
     @DeleteMapping("/{postId}/like")
     fun deletePostLike(@PathVariable postId: Int): ResponseEntity<Unit> {
-        //        var userId = JWTHelper.~~
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
-            .body(postLikeService.deletePostLike(0, postId))
+            // userId JWT에서 꺼내기
+            .body(postLikeService.deletePostLike(44, postId))
     }
 }
