@@ -4,8 +4,10 @@ import com.b05.newsfeedproject.domain.comments.dto.CommentResponse
 import com.b05.newsfeedproject.domain.comments.dto.CreateCommentRequest
 import com.b05.newsfeedproject.domain.comments.dto.UpdateCommentRequest
 import com.b05.newsfeedproject.domain.comments.service.CommentService
+import com.b05.newsfeedproject.domain.user.model.User
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -23,13 +25,13 @@ class CommentController(
 
     @PostMapping()
     fun createComment(
+        @AuthenticationPrincipal user: User,
         @PathVariable postId: Int,
-        @PathVariable userId: Int,
         @RequestBody commentRequest: CreateCommentRequest
     ): ResponseEntity<CommentResponse> {
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(commentService.createComment(postId, userId, commentRequest))
+            .body(commentService.createComment(user.password.toInt(),postId,commentRequest))
     }
 
     @GetMapping()
