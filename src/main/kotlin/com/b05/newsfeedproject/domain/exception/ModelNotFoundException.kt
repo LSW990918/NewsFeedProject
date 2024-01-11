@@ -5,3 +5,4 @@ data class ModelNotFoundException(
     val id: Int?,
 ) :
     RuntimeException("Model $modelName not found with given id: $id")
+
