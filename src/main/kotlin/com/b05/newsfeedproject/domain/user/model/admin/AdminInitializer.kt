@@ -9,22 +9,21 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
 
-
-@Component
-class AdminInitializer(
-    private val userRepository: UserRepository,
-    private val encoder: PasswordEncoder
-) : ApplicationRunner {
-    override fun run(args: ApplicationArguments?) {
-        userRepository.save(
-            User(
-                "admin",
-                "관리자",
-                encoder.encode("admin"),
-                UserType.ADMIN,
-                LocalDateTime.now(),
-                null
-            )
-        )
-    }
-}
+//
+//
+//@Component
+//class AdminInitializer(
+//        private val userRepository: UserRepository,
+//        private val encoder: PasswordEncoder
+//) : ApplicationRunner {
+//    override fun run(args: ApplicationArguments?) {
+//        userRepository.save(User(
+//                "admin",
+//                encoder.encode("admin"),
+//                "관리자",
+//                UserType.ADMIN,
+//                LocalDateTime.now(),
+//                null
+//        ))
+//    }
+//}
