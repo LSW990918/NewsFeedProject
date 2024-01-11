@@ -21,13 +21,17 @@ class PostLikeServiceImpl(
         // post.userId 추가
         return (0 != userId).let {
             if (it)
-                postLikeRepository.findByUserIdAndPostId(userId,postId) ?:
-                postLikeRepository.save(PostLike(post,user))
+                postLikeRepository.findByUserIdAndPostId(userId, postId) ?: postLikeRepository.save(
+                    PostLike(
+                        post,
+                        user
+                    )
+                )
         }
     }
 
     override fun deletePostLike(userId: Int, postId: Int) {
-        postLikeRepository.deleteByUserIdAndPostId(userId,postId)
+        postLikeRepository.deleteByUserIdAndPostId(userId, postId)
     }
 
     override fun getPostLike(postId: Int): PostLikeResponse? {
