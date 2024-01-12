@@ -10,6 +10,7 @@ import com.b05.newsfeedproject.domain.posts.repository.PostRepository
 import com.b05.newsfeedproject.domain.user.repository.UserRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.format.DateTimeFormatter
 
 @Service
@@ -20,6 +21,7 @@ class CommentServiceImpl(
 
     ) : CommentService {
 
+    @Transactional
     override fun createComment(userId: Int, postId: Int, request: CreateCommentRequest): CommentResponse {
         val post = postRepository.findByIdOrNull(postId)
             ?: throw ModelNotFoundException("post", postId)
@@ -30,8 +32,7 @@ class CommentServiceImpl(
                 content = request.content,
                 post = post,
                 user = user,
-
-                )
+            )
         ).toResponse()
     }
 

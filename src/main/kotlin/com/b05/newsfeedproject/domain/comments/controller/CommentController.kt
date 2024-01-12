@@ -22,6 +22,7 @@ class CommentController(
         @PathVariable postId: Int,
         @RequestBody commentRequest: CreateCommentRequest
     ): ResponseEntity<CommentResponse> {
+        println(user)
         return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(commentService.createComment(user.password.toInt(),postId,commentRequest))
