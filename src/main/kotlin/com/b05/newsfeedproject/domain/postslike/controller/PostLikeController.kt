@@ -4,6 +4,8 @@ import com.b05.newsfeedproject.domain.postslike.dto.PostLikeResponse
 import com.b05.newsfeedproject.domain.postslike.service.PostLikeService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.security.core.userdetails.User
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -18,19 +20,19 @@ class PostLikeController(
             .body(postLikeService.getPostLike(postId))
     }
 
+    // user.password : userId
     @PostMapping("/{postId}/like")
-    fun createPostLike(@PathVariable postId: Int): ResponseEntity<Unit> {
+    fun createPostLike(@AuthenticationPrincipal user: User, @PathVariable postId: Int): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
-            // userId JWT에서 꺼내기
-            .body(postLikeService.createPostLike(44, postId))
+            .body(postLikeService.createPostLike(user.password.toInt(), postId))
     }
 
+    // user.password : userId
     @DeleteMapping("/{postId}/like")
-    fun deletePostLike(@PathVariable postId: Int): ResponseEntity<Unit> {
+    fun deletePostLike(@AuthenticationPrincipal user: User, @PathVariable postId: Int): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
-            // userId JWT에서 꺼내기
-            .body(postLikeService.deletePostLike(44, postId))
+            .body(postLikeService.deletePostLike(user.password.toInt(), postId))
     }
 }
