@@ -7,6 +7,7 @@ import com.b05.newsfeedproject.domain.comments.model.Comment
 import com.b05.newsfeedproject.domain.comments.repsitory.CommentRepository
 import com.b05.newsfeedproject.domain.exception.ModelNotFoundException
 import com.b05.newsfeedproject.domain.posts.repository.PostRepository
+import com.b05.newsfeedproject.domain.user.repository.UserRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.format.DateTimeFormatter
@@ -14,17 +15,22 @@ import java.time.format.DateTimeFormatter
 @Service
 class CommentServiceImpl(
     private val commentRepository: CommentRepository,
-    private val postRepository: PostRepository
+    private val postRepository: PostRepository,
+    private val userRepository: UserRepository,
 
-) : CommentService {
+    ) : CommentService {
 
-    override fun createComment(postId: Int, request: CreateCommentRequest): CommentResponse {
+
+    override fun createComment(userId: Int, postId: Int, request: CreateCommentRequest): CommentResponse {
         val post = postRepository.findByIdOrNull(postId)
             ?: throw ModelNotFoundException("post", postId)
+        val user = userRepository.findByIdOrNull(userId)
+            ?: throw ModelNotFoundException("user", userId)
         return commentRepository.save(
             Comment(
                 content = request.content,
                 post = post,
+                user = user,
             )
         ).toResponse()
     }
@@ -35,7 +41,12 @@ class CommentServiceImpl(
         return post.comments.map { it.toResponse() }
     }
 
-    override fun updateComment(postId: Int, commentId: Int, request: UpdateCommentRequest): CommentResponse {
+    override fun updateComment(
+        userId: Int,
+        postId: Int,
+        commentId: Int,
+        request: UpdateCommentRequest
+    ): CommentResponse {
         val post = postRepository.findByIdOrNull(postId)
             ?: throw ModelNotFoundException("post", postId)
         val comment = commentRepository.findByIdOrNull(commentId)
@@ -47,7 +58,7 @@ class CommentServiceImpl(
         return commentRepository.save(comment).toResponse()
     }
 
-    override fun deleteComment(postId: Int, commentId: Int) {
+    override fun deleteComment(userId: Int, postId: Int, commentId: Int) {
         val post = postRepository.findByIdOrNull(postId)
             ?: throw ModelNotFoundException("post", postId)
         val comment = commentRepository.findByIdOrNull(commentId)
@@ -67,5 +78,6 @@ fun Comment.toResponse(): CommentResponse {
         id = id!!,
         content = content,
         date = date,
+        user = user
     )
 }
