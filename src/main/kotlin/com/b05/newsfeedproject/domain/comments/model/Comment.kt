@@ -24,8 +24,8 @@ data class Comment(
     @Column(name = "updated_at")
     var updatedDate: LocalDateTime? = null,
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     var user: User,
 
     @ManyToOne(fetch = FetchType.LAZY)

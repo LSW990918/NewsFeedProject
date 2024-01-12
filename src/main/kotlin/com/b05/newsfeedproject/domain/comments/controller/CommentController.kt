@@ -4,11 +4,11 @@ import com.b05.newsfeedproject.domain.comments.dto.CommentResponse
 import com.b05.newsfeedproject.domain.comments.dto.CreateCommentRequest
 import com.b05.newsfeedproject.domain.comments.dto.UpdateCommentRequest
 import com.b05.newsfeedproject.domain.comments.service.CommentService
-import com.b05.newsfeedproject.domain.user.model.User
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
+import org.springframework.security.core.userdetails.User
 
 @RequestMapping("/posts/{postId}/comments")
 @RestController
@@ -22,7 +22,6 @@ class CommentController(
         @PathVariable postId: Int,
         @RequestBody commentRequest: CreateCommentRequest
     ): ResponseEntity<CommentResponse> {
-        println(user)
         return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(commentService.createComment(user.password.toInt(),postId,commentRequest))
