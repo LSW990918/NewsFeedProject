@@ -1,5 +1,6 @@
 package com.b05.newsfeedproject.domain.posts.service
 
+import com.b05.newsfeedproject.domain.exception.AccessDeniedException
 import com.b05.newsfeedproject.domain.exception.ModelNotFoundException
 import com.b05.newsfeedproject.domain.posts.dto.CreatePostRequest
 import com.b05.newsfeedproject.domain.posts.dto.PostResponse
@@ -49,10 +50,11 @@ class PostServiceImpl(
         //userId와 post.user 일치하는지 확인
         val post = postRepository.findByIdOrNull(postId)
             ?: throw ModelNotFoundException("post", postId)
-        post.title = request.title
-        post.content = request.content
-
-        return post.toResponse()
+        if (user.id == post.user.id) {
+            post.title = request.title
+            post.content = request.content
+            return post.toResponse()
+        } else throw AccessDeniedException("post")
     }
 
     @Transactional
@@ -62,7 +64,9 @@ class PostServiceImpl(
         //userId와 post.user 일치하는지 확인
         val post = postRepository.findByIdOrNull(postId)
             ?: throw ModelNotFoundException("post", postId)
-        postRepository.delete(post)
+        if (user.id == post.user.id) {
+            postRepository.delete(post)
+        } else throw AccessDeniedException("post")
     }
 }
 
