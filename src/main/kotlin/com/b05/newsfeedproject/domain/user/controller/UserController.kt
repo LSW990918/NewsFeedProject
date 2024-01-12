@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 class UserController(
-        private val userService: UserService,
-        private val jwtTokenProvider: JwtTokenProvider) {
+    private val userService: UserService,
+    private val jwtTokenProvider: JwtTokenProvider
+) {
 
     //프로필 조회
     @GetMapping("/users/{userId}/profile")
@@ -26,7 +27,10 @@ class UserController(
 
     //프로필 수정
     @PutMapping("/users/{userId}/profile")
-    fun updateUser(@PathVariable userId: Int, @RequestBody updateUserRequest: UpdateUserRequest): ResponseEntity<UserResponse> {
+    fun updateUser(
+        @PathVariable userId: Int,
+        @RequestBody updateUserRequest: UpdateUserRequest
+    ): ResponseEntity<UserResponse> {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(userId, updateUserRequest))
     }
 
@@ -38,7 +42,7 @@ class UserController(
 
 
     @PostMapping("/signout")
-    fun signout():ResponseEntity<Unit> {
+    fun signout(): ResponseEntity<Unit> {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.signout())
 

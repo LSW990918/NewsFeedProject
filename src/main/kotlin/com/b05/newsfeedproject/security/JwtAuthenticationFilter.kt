@@ -9,19 +9,22 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.web.authentication.WebAuthenticationDetails
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 
 @Component
 class JwtAuthenticationFilter(
-        private val jwtTokenProvider: JwtTokenProvider,
-        private val redisTemplate: RedisTemplate<String, Any>
+    private val jwtTokenProvider: JwtTokenProvider,
+    private val redisTemplate: RedisTemplate<String, Any>
 ) : OncePerRequestFilter() {
 
 
-    override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
+    override fun doFilterInternal(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        filterChain: FilterChain
+    ) {
 
 
         val token = parseBearerToken(request)
@@ -33,12 +36,12 @@ class JwtAuthenticationFilter(
 
             if (isLogout != null)
                 UsernamePasswordAuthenticationToken.authenticated(user, token, user.authorities)
-                        .apply {
-                            details = WebAuthenticationDetails(request)
-                        }.also {
+                    .apply {
+                        details = WebAuthenticationDetails(request)
+                    }.also {
 
-                            SecurityContextHolder.getContext().authentication = it
-                        }
+                        SecurityContextHolder.getContext().authentication = it
+                    }
         }
 
         filterChain.doFilter(request, response)
@@ -47,14 +50,14 @@ class JwtAuthenticationFilter(
 
 
     private fun parseBearerToken(request: HttpServletRequest): String? = request.getHeader(HttpHeaders.AUTHORIZATION)
-            ?.takeIf { it.startsWith("Bearer ", true) }?.substring(7)
+        ?.takeIf { it.startsWith("Bearer ", true) }?.substring(7)
 
 
     private fun parseUserSpecification(token: String?) = (
             token?.takeIf { it.length >= 10 }?.let {
                 jwtTokenProvider.validateTokenAndGetSubject(it)
             } ?: "anonymous:anonymous:anonymous").split(":").let {
-                User(it[0], it[2], listOf(SimpleGrantedAuthority(it[1]))) 
+        User(it[0], it[2], listOf(SimpleGrantedAuthority(it[1])))
     }
 
 

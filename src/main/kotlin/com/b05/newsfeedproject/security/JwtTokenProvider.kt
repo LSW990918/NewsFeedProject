@@ -1,14 +1,10 @@
 package com.b05.newsfeedproject.security
 
-import io.jsonwebtoken.Claims
-import io.jsonwebtoken.Jws
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
-import jakarta.servlet.http.HttpServletRequest
 import lombok.extern.slf4j.Slf4j
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.PropertySource
-import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
 import java.sql.Date
 import java.sql.Timestamp
@@ -46,19 +42,18 @@ class JwtTokenProvider(
         .body
         .subject
 
-    fun validateToken(token: String):Boolean {
+    fun validateToken(token: String): Boolean {
 
         try {
             Jwts.parserBuilder()
-                    .setSigningKey(secretKey.toByteArray())
-                    .build()
-                    .parseClaimsJws(token)
+                .setSigningKey(secretKey.toByteArray())
+                .build()
+                .parseClaimsJws(token)
             return true
-        }catch (e:Exception){
+        } catch (e: Exception) {
 
             return false
         }
-
 
 
     }
