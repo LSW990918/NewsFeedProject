@@ -29,4 +29,9 @@ class GlobalExceptionHandler {
     fun handleAccessDeniedException(e: AccessDeniedException): ResponseEntity<ErrorResponse> {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ErrorResponse(e.message))
     }
+
+    @ExceptionHandler(AlreadyExistException::class)
+    fun handleAccessDeniedException(e: AlreadyExistException): ResponseEntity<ErrorResponse> {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ErrorResponse(e.message))
+    }
 }
