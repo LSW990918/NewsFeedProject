@@ -33,7 +33,7 @@ class Post(
     )
     var comments: MutableList<Comment> = mutableListOf(),
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     var user: User
 
