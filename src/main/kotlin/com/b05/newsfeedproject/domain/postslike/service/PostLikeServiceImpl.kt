@@ -36,7 +36,7 @@ class PostLikeServiceImpl(
 
     override fun deletePostLike(userId: Int, postId: Int) {
         if (postLikeRepository.findByUserIdAndPostId(userId, postId) == null) {
-            throw ModelNotFoundException("Post Like",postId)
+            throw ModelNotFoundException("Post Like", postId)
         }
         postLikeRepository.deleteByUserIdAndPostId(userId, postId)
     }
