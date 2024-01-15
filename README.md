@@ -5,7 +5,7 @@
 
 
 - **개발 기간** : 24.01.08 ~ 24.01.15 (1주)
-- **개발 환경** : Kotlin ,Spring Boot, Supabase, PostgreSql, Redis
+- **개발 환경** : Kotlin, Spring Boot, Supabase, PostgreSql, Redis
 - **프로젝트 이름** : NewsFeedProject
 - **프로젝트 설명 :** 뉴스피드 프로젝트
 
