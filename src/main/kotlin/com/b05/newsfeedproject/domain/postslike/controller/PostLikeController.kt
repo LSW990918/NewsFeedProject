@@ -13,7 +13,7 @@ class PostLikeController(
     private val postLikeService: PostLikeService
 ) {
 
-    @GetMapping("/{postId}/like")
+    @GetMapping("/posts/{postId}/like")
     fun getPostLike(@PathVariable postId: Int): ResponseEntity<PostLikeResponse> {
         return ResponseEntity
             .status(HttpStatus.OK)
@@ -21,7 +21,7 @@ class PostLikeController(
     }
 
     // user.password : userId
-    @PostMapping("/{postId}/like")
+    @PostMapping("/posts/{postId}/like")
     fun createPostLike(@AuthenticationPrincipal user: User, @PathVariable postId: Int): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
@@ -29,7 +29,7 @@ class PostLikeController(
     }
 
     // user.password : userId
-    @DeleteMapping("/{postId}/like")
+    @DeleteMapping("/posts/{postId}/like")
     fun deletePostLike(@AuthenticationPrincipal user: User, @PathVariable postId: Int): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
