@@ -25,14 +25,13 @@ class PostLikeServiceImpl(
             throw AccessDeniedException("Your Post Like")
         }
         if (postLikeRepository.findByUserIdAndPostId(userId, postId) == null) {
-            throw AlreadyExistException("Post Like")
-        }
-        postLikeRepository.save(
-            PostLike(
-                post,
-                user
+            postLikeRepository.save(
+                PostLike(
+                    post,
+                    user
+                )
             )
-        )
+        } else throw AlreadyExistException("Post Like")
     }
 
     override fun deletePostLike(userId: Int, postId: Int) {
